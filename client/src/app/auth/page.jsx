@@ -3,6 +3,9 @@ import * as React from 'react';
 import './page.css'
 import { motion } from 'framer-motion'
 import { useState } from 'react';
+import APIRequests from '@/api';
+import VerifyEmailForm from './components/verifyPin';
+import { Button } from '@chakra-ui/react';
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
@@ -15,6 +18,7 @@ const Login = () => {
   }
 
   const [loginStat, setLoginStat] = useState(false)
+  const [otp, setOtp] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,10 +27,17 @@ const Login = () => {
             alert("Please fill all the fields");
             return;
         }
-        setLoginStat(true);
-        window.location.href = "/";
+        const response = await APIRequests.signIn(userDetails);
+        console.log("login response",response);
+        if(response.status === 200) {
+          // show pop up to enter otp
+          setOtp(true);
+        }
+
+        // setLoginStat(true);
+        // window.location.href = "/";
     } catch (error) {
-      setLoginStat(false);
+      // setLoginStat(false);
       // localStorage.setItem("isIn", 'false');
       console.log(error);
   }
@@ -50,6 +61,7 @@ const Login = () => {
   
   return (
     <div className="loginBox mob:w-52">
+      <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={userDetails.email} />
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

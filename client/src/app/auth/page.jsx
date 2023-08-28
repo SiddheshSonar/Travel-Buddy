@@ -49,9 +49,20 @@ const Login = () => {
     } catch (error) {
       // setLoginStat(false);
       // localStorage.setItem("isIn", 'false');
+      toast.error('Login Failed!', {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
       console.log(error);
     }
   }
+
   function myFunction() {
     var x = document.getElementById("myInput");
     if (x.type === "password") {

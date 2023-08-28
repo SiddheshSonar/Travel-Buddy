@@ -48,6 +48,16 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
             if (res.status == 200) {
                 console.log("success");
                 localStorage.setItem("isIn", 'true');
+                toast.success('Login Succesful!', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
                 router.push('/')
 
                 // console.log("from verify otp", {

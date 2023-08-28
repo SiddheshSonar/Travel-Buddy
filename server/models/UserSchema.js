@@ -2,6 +2,8 @@
 
 import mongooose from 'mongoose';
 
+// name, email, password, gyear, branch
+
 const userSchema = new mongooose.Schema({
   name: {
     type: String,
@@ -19,11 +21,19 @@ const userSchema = new mongooose.Schema({
     type: Number,
     required: false,
   },
-  work: {
-    type: String,
-    required: false,
+  // work: {
+  //   type: String,
+  //   required: false,
+  // },
+  // user_role: {
+  //   type: String,
+  //   required: true,
+  // },
+  graduation: {
+    type: Number,
+    required: true,
   },
-  user_role: {
+  branch: {
     type: String,
     required: true,
   },

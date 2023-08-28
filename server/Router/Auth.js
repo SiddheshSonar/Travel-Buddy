@@ -16,8 +16,8 @@ authRouter.get("/", (req, res) => {
 });
 
 authRouter.post("/register", async (req, res) => {
-  const { name, email, user_role, password } = req.body;
-  if (!name || !email || !user_role || !password) {
+  const { name, email, password, graduation, branch } = req.body;
+  if (!name || !email ||  !password || !branch || !graduation) {
     return res.status(422).json({ error: "plz fill data properly" });
   }
   try {
@@ -26,7 +26,14 @@ authRouter.post("/register", async (req, res) => {
       return res.status(422).json({ error: "already exits" });
     }
     else {
-      const user = new User({ name, email, user_role, password });
+      // const user = new User({ name, email, password, graduation, branch });
+      const user = new User({
+        "name": name,
+        "email": email,
+        "password": password,
+        "graduation": graduation,
+        "branch": branch
+      })
       await user.save();
       res.status(201).json({ message: "user registered successfully" });
     }
@@ -110,37 +117,43 @@ authRouter.post("/otp", async (req, res) => {
 
 async function sendEmail(toEmail) {
   // create reusable transporter object using the default SMTP transport
-
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL,
-      pass: process.env.MAILPASS,
-    },
-  });
-
-  let otp = generateOTP();
-  let user = await User.findOne({ email: toEmail });
-  user.otp = otp;
-
-  await user.save();
-  // Schedule a task to set otp to null after 3 minutes
-  setTimeout(async () => {
-    // console.log("setting otp to null")
-    user.otp = null;
+  try{
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.MAIL,
+        pass: process.env.MAILPASS,
+      },
+    });
+  
+    let otp = generateOTP();
+    let user = await User.findOne({ email: toEmail });
+    user.otp = otp;
+  
     await user.save();
-    // console.log("done")
-  }, 3 * 60 * 1000); // 3 minutes in milliseconds
+    // Schedule a task to set otp to null after 3 minutes
+    setTimeout(async () => {
+      // console.log("setting otp to null")
+      user.otp = null;
+      await user.save();
+      // console.log("done")
+    }, 3 * 60 * 1000); // 3 minutes in milliseconds
+  
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: `"No Reply" <Support>`, // sender address
+      to: toEmail, // list of receivers
+      subject: "OTP for Verification", // Subject line
+      text: `Your OTP for verification is: ${otp}`, // plain text body
+    });
+  
+    console.log(`Message sent: ${info.messageId}`);
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: `"No Reply" <Support>`, // sender address
-    to: toEmail, // list of receivers
-    subject: "OTP for Verification", // Subject line
-    text: `Your OTP for verification is: ${otp}`, // plain text body
-  });
+  } catch (err) {
+    console.log(err);
+  }
 
-  console.log(`Message sent: ${info.messageId}`);
+  
 }
 
 function generateOTP() {

@@ -64,7 +64,7 @@
     font-size: 12px;
 }
 
-.loginBox form a {
+.loginBox form .submit-btn {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -78,7 +78,7 @@
   letter-spacing: 4px;
 }
 
-.loginBox a:hover {
+.loginBox .submit-btn:hover {
   cursor: pointer;
   background-color: #03e9f4;
   color: white !important;
@@ -86,14 +86,14 @@
   box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
 }
 
-.loginBox a span {
+.loginBox .submit-btn span {
   position: absolute;
   display: block;
   color: #03e9f4;
   background-color: #03e9f4;
 }
 
-.loginBox a span:nth-child(1) {
+.loginBox .submit-btn span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;
@@ -111,7 +111,7 @@
   }
 }
 
-.loginBox a span:nth-child(2) {
+.loginBox .submit-btn span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 2px;
@@ -130,7 +130,7 @@
   }
 }
 
-.loginBox a span:nth-child(3) {
+.loginBox .submit-btn span:nth-child(3) {
   bottom: 0;
   right: -100%;
   width: 100%;
@@ -148,7 +148,7 @@
     right: 100%;
   }
 }
-.loginBox a span:nth-child(4) {
+.loginBox .submit-btn span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 2px;

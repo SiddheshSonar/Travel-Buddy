@@ -31,11 +31,13 @@ const userSchema = new mongooose.Schema({
   // },
   graduation: {
     type: Number,
-    required: true,
+    // required: true,
+    required: false,
+
   },
   branch: {
     type: String,
-    required: true,
+    required: false,
   },
   password: {
     type: String,

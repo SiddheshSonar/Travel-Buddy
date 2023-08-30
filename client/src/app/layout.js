@@ -1,6 +1,11 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from './providers'
+import { ToastContainer } from 'react-toastify';
+import NavB from './auth/components/navB';
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -15,6 +20,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <NavB />
+          <ToastContainer />
           {children}
         </Providers>
       </body>

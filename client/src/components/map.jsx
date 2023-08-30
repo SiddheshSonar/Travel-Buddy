@@ -3,13 +3,9 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from "react";
 import { useRef } from 'react';
-// import DeckGL from "@deck.gl/react";
 import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
 import { BiCurrentLocation } from "react-icons/bi"
 import "./cust.css"
-
-const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiZ25zbXRlc3QiLCJhIjoiY2xpdHlxdDVhMHRicjNubzdweDEyZmYweiJ9.Ry25g8XRnQ7ZaatTwsiBRw";
-const layers = [];
 
 const MyMap = () => {
   const mapRef = useRef();

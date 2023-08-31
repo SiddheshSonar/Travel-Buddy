@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-const registerModal = () => {
+const RegisterModal = () => {
     const [modal, setModal] = useState(false);
 
     const toggle = () => setModal(!modal);
@@ -34,4 +34,4 @@ const registerModal = () => {
     );
 };
 
-export default registerModal;
+export default RegisterModal;

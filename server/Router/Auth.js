@@ -88,23 +88,20 @@ authRouter.post("/otp", async (req, res) => {
     console.log("otp", userLogin.otp);
 
     if (userLogin.otp == otp) {
-      const secretKey = "your_secret_key";
+      const secretKey = process.env.JWTkey;
       const token = jwt.sign(
-        { uid: userLogin._id, privilege: 2, user_role: userLogin.user_role },
+        { uid: userLogin._id, name:userLogin.name},
         secretKey,
         {
           expiresIn: "24h",
         }
       );
       return res.status(200).json({
-        message: "user signed in successfully",
+        // message: "user signed in successfully",
         token: token,
-        // work: userLogin.work,
-        user_role: userLogin.user_role,
         email: userLogin.email,
         name: userLogin.name,
         uid: userLogin._id,
-        privilege: 2,
       });
     } else {
       return res.status(403).json({ error: "Invalid credentials" });

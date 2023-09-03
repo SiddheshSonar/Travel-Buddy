@@ -49,6 +49,7 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
             if (res.status == 200) {
                 console.log("success");
                 localStorage.setItem("isIn", 'true');
+                localStorage.setItem("profile", JSON.stringify(res.data));
                 toast.success('Login Succesful!', {
                     position: "top-center",
                     autoClose: 1500,

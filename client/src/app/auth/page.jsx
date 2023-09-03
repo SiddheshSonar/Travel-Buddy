@@ -7,8 +7,10 @@ import APIRequests from '@/api';
 import VerifyEmailForm from './components/verifyPin';
 import { Button } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
+import RegisterModal from './components/registerModal';
 
 const Login = () => {
+  const [modal, setModal] = useState(false);
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: ""
@@ -92,7 +94,7 @@ const Login = () => {
         <form>
           <div className="userBox">
             <input type="text" id="userid" name="email" onChange={handleChange} onKeyDown={handleKeyPress}></input>
-            <label>Username</label>
+            <label>Email</label>
           </div>
           <div className="userBox">
             <input type="password" id="myInput" name="password" onChange={handleChange} onKeyDown={handleKeyPress}></input>
@@ -113,11 +115,14 @@ const Login = () => {
               Submit
             </a>
             <div className='text-register mt-4 w-full text-center text-sm'>
-              Not a user? <a className='hover:text-login cursor-pointer hover:underline'>Register</a>
+              Not a user? <a onClick={() => {
+                setModal(!modal);
+              }} className='hover:text-login cursor-pointer hover:underline'>Register</a>
             </div>
           </div>
         </form>
       </motion.div>
+      <RegisterModal modal={modal} setModal={setModal}/>
     </div>
   )
 }

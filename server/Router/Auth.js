@@ -18,12 +18,12 @@ authRouter.get("/", (req, res) => {
 authRouter.post("/register", async (req, res) => {
   const { name, email, password, graduation, branch } = req.body;
   if (!name || !email ||  !password || !branch || !graduation) {
-    return res.status(422).json({ error: "plz fill data properly" });
+    return res.status(422).json({ error: "Please fill data correctly!" });
   }
   try {
     const userExist = await User.findOne({ email: email });
     if (userExist) {
-      return res.status(422).json({ error: "already exits" });
+      return res.status(201).json({ error: "User Already Exists!" });
     }
     else {
       // const user = new User({ name, email, password, graduation, branch });
@@ -35,7 +35,7 @@ authRouter.post("/register", async (req, res) => {
         "branch": branch
       })
       await user.save();
-      res.status(201).json({ message: "user registered successfully" });
+      res.status(200).json({ message: "User Registered Successfully!" });
     }
   } catch (err) {
     console.log(err);

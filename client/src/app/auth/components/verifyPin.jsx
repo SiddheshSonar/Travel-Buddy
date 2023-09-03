@@ -31,11 +31,6 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
     const [pin, setPin] = useState("");
     const router = useRouter()
 
-    // const dispatch = useAppDispatch();
-
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -43,7 +38,7 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
                 email: email,
                 otp: pin,
             };
-            console.log("send", data);
+            // console.log("send", data);
             const res = await APIRequests.verifyOTP(data);
             console.log(res.data);
             if (res.status == 200) {
@@ -61,35 +56,6 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
                     theme: "dark",
                     });
                 router.push('/')
-
-                // console.log("from verify otp", {
-                //   name: res.data.name || "",
-                //   email: email || "",
-                //   token: res.data.token || "",
-                //   privilege: res.data.privilege || 0,
-                //   uid: res.data.uid || "",
-                //   user_role: res.data.user_role || "",
-                // });
-                //   dispatch(
-                //     auth({
-                //       result: {
-                //         name: res.data.name || "",
-                //         email: email || "",
-                //         token: res.data.token || "",
-                //         privilege: res.data.privilege || 0,
-                //         uid: res.data.uid || "",
-                //         user_role: res.data.user_role || "",
-                //       },
-                //       type: ActionTypes.AUTH,
-                //     })
-                //   );
-
-                //   if (res.data.user_role && res.data.user_role === "investigator") {
-                //     navigate("/dashboard");
-                //   } else {
-                //     navigate("/blogs");
-                //   }
-
 
             }
             handleClose();

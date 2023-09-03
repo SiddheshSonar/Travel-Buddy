@@ -1,17 +1,17 @@
-// import jwt from "jsonwebtoken";
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-const SECRET_KEY = "your_secret_key";
+dotenv.config();
+
+const SECRET_KEY = process.env.JWTkey;
 
 const auth = (req, res, next) => {
-  console.log("auth middleware");
   try {
     let token = req.headers.authorization;
     if (token) {
       token = token.split(" ")[1];
       let user = jwt.verify(token, SECRET_KEY);
       req.userID = user.uid;
-      req.userPrivilege = user.privilege;
     } else {
       return res.status(401).json({ message: "Unauthorized User" });
     }
@@ -22,5 +22,5 @@ const auth = (req, res, next) => {
   }
 };
 
-// export default auth;
-module.exports = auth;
+export default auth;
+// module.exports = auth;

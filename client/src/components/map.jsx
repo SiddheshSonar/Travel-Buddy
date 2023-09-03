@@ -4,10 +4,11 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import React from "react";
 import { useRef } from 'react';
 import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
-import { BiCurrentLocation } from "react-icons/bi"
+import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./cust.css"
 import { toast } from 'react-toastify';
 import { scaleFadeConfig } from '@chakra-ui/react';
+import APIRequests from '@/api';
 
 const MyMap = () => {
   const mapRef = useRef();
@@ -49,6 +50,15 @@ const MyMap = () => {
   };
 
   React.useEffect(() => {
+    APIRequests.getHome().then((res) => {
+      if (res.status == 200) {
+        console.log("fetch home location:",res.data)
+        setHomeLocation(res.data.location);
+      }
+
+    }).catch((err) => {
+      console.log("error fetching home", err)
+    })
     getCurrentLocation();
   }, []);
 
@@ -58,6 +68,10 @@ const MyMap = () => {
     longitude: 72.83611545347907,
     zoom: 13
   });
+
+  const [isEditingHomeLocation, setIsEditingHomeLocation] = React.useState(false);
+  const [homeLocation, setHomeLocation] = React.useState(null);
+
 
   return (
     <div style={{
@@ -74,17 +88,51 @@ const MyMap = () => {
 
         mapboxAccessToken={"pk.eyJ1IjoiZ25zbXRlc3QiLCJhIjoiY2xseHc5d3plMmt0eDNlcGU4NmN2eXk4aCJ9.qjuYscqJ5dSJMS3XJYmmxQ"}
       >
-        <div
-          className='rounded-full  w-12 h-12 flex items-center justify-center'
-          style={{ position: 'absolute', left: 10, top: 10, backgroundColor: '#00000099' }}
-          onClick={getCurrentLocation}
+        <div style={{ position: 'absolute', left: 10, top: 10 }} className='flex flex-col'>
+          <div
+            className='rounded-full w-12 h-12 flex items-center justify-center mb-2'
+            style={{ backgroundColor: '#00000099' }}
+            onClick={getCurrentLocation}
+          >
+            <BiCurrentLocation
+              title='Current Location'
+              size={30}
+              color="lightblue"
+            />
+          </div>
+          <div
+            className={`rounded-full w-12 h-12 flex items-center justify-center ${isEditingHomeLocation ? 'bg-red-600' : 'bg-gray-500'}`}
+            style={{ backgroundColor: '#00000099' }}
+            onClick={async () => {
 
-        >
-          <BiCurrentLocation
-            title='Current Location'
-            size={30}
-            color="lightblue"
-          />
+              if (!isEditingHomeLocation) {
+                setIsEditingHomeLocation(true);
+                if (!homeLocation) setHomeLocation(location);
+              } else {
+                setIsEditingHomeLocation(false);
+                APIRequests.setHome({
+                  location: {
+                    latitude: homeLocation.latitude,
+                    longitude: homeLocation.longitude,
+                  }
+                }).then((res) => {
+                  if(res.status == 200) toast.success("Home location set successfully", toastConfig);
+                  else if(res.status == 400) toast.error("User not found", toastConfig);
+                  else toast.error("Error setting home location", toastConfig);
+                }).catch((err) => {
+                  toast.error("Error setting home location", toastConfig);
+                }
+                )
+
+              }
+            }}
+          >
+            <BiLocationPlus
+              title='Set Home Location'
+              size={30}
+              color={isEditingHomeLocation ? 'lightblue' : 'white'}
+            />
+          </div>
         </div>
         {(location.latitude && location.longitude) &&
           (<Marker
@@ -96,6 +144,22 @@ const MyMap = () => {
             <CustomMarker />
           </Marker>
           )}
+        {homeLocation && (
+          <Marker
+            latitude={homeLocation.latitude}
+            longitude={homeLocation.longitude}
+            draggable={isEditingHomeLocation}
+            onDragEnd={(event) => {
+              // console.log("Home location set to:", event)
+              setHomeLocation({
+                latitude: event.lngLat.lat,
+                longitude: event.lngLat.lng,
+              });
+            }}
+          >
+          </Marker>
+        )}
+
       </ReactMapGL>
     </div>
   );

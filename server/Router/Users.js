@@ -1,37 +1,14 @@
-// const jwt = require("jsonwebtoken");
+import express from 'express';
+import dotenv from 'dotenv';
+import auth from '../middlewares/auth.js';
+import UserController from '../controllers/UserC.js';
+dotenv.config()
 
-// const express = require("express");
-// const router = express.Router();
+const uR = express.Router();
 
-// require("../db/Conn");
-// const User = require("../models/Schema");
-// // router.get("/", (req, res) => {
-// //   console.log("Received a GET HTTP method");
-// //   res.send(`Hello world from the server rotuer js`);
-// // });
+const uC = new UserController();
 
-// router.get("/", async (req, res) => {
-//   const userId = req.userID;
-//   const userPrivilege = req.userPrivilege;
-//   // console.log("req", req);
-//   console.log("userId", userId);
-//   console.log("privilege", userPrivilege);
-//   try {
-//     // get all users
-//     const allUsers = await User.find();
-//     // if exists return all users in res
-//     if (allUsers) {
-//       res.status(200).json({ allUsers });
-//     }
-//     // else return error
-//     else {
-//       res.status(400).json({ error: "no users found" });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+uR.post("/home", auth,  uC.updateLocation);
+uR.get("/home", auth, uC.getHome);
 
-// module.exports = router;
-
-// // sign jwt and return []
+export default uR;

@@ -24,6 +24,12 @@ class APIRequests {
   static async signUp(data) {
     return await API.post("/auth/register", data);
   }
+  static async setHome(data) {
+    return await API.post("/user/home", data);
+  }
+  static async getHome() {
+    return await API.get("/user/home");
+  }
 }
 
 export default APIRequests;

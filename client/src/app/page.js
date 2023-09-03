@@ -6,17 +6,17 @@ import React from 'react'
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState(0);
   const router = useRouter();
 
   React.useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("profile")));
+    setUser(JSON.parse(localStorage.getItem("profile"))??-1);
   }, []);
 
   return (
     <div className="relative">
       <MyMap/>
-      {!user && (
+      {user == -1 && (
         <div 
           style={{backdropFilter: 'blur(2px)'}}
           className="absolute inset-0 bg-black bg-opacity-10 flex justify-center items-center"

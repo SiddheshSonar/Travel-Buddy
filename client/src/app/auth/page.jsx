@@ -40,7 +40,7 @@ const Login = () => {
         return;
       }
       const response = await APIRequests.signIn(userDetails);
-      console.log("login response", response);
+      // console.log("login response", response);
       if (response.status === 200) {
         // show pop up to enter otp
         setOtp(true);

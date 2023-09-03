@@ -1,7 +1,7 @@
 "use client"
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React from "react";
+import React, { useCallback } from "react";
 import { useRef } from 'react';
 import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
 import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
@@ -14,6 +14,10 @@ const MyMap = () => {
 
   const [location, setLocation] = React.useState({});
 
+  const fly = useCallback(({longitude, latitude}) => {
+    mapRef.current?.flyTo({center: [longitude, latitude], duration: 2000});
+  }, []);
+
   const getCurrentLocation = () => {
     navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
       if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
@@ -22,10 +26,7 @@ const MyMap = () => {
             setLocation(position.coords);
             const lat = isNaN(position.coords.latitude) ? 19.12315995904184 : position.coords.latitude;
             const long = isNaN(position.coords.longitude) ? 72.83611545347907 : position.coords.longitude;
-            mapRef.current?.flyTo({
-              center: [long, lat],
-              duration: 2000
-            });
+            fly({longitude: long, latitude: lat});
           },
           function (error) {
             toast.error(error.message, toastConfig);
@@ -51,7 +52,6 @@ const MyMap = () => {
   React.useEffect(() => {
     APIRequests.getHome().then((res) => {
       if (res.status == 200) {
-        // console.log("fetch home location:", res.data)
         setHomeLocation(res.data.location);
       }
 
@@ -79,7 +79,8 @@ const MyMap = () => {
     }}>
       <ReactMapGL
         ref={mapRef}
-        {...viewport}
+        // {...viewport}
+        initialViewState={viewport}
         interactive={true}
 
         mapStyle="mapbox://styles/gnsmtest/cllxwulk000kv01peb9yk15a9"

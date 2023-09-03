@@ -1,10 +1,6 @@
-// const mongooose = require("mongoose");
+import mongoose from 'mongoose';
 
-import mongooose from 'mongoose';
-
-// name, email, password, gyear, branch
-
-const userSchema = new mongooose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,19 +17,9 @@ const userSchema = new mongooose.Schema({
     type: Number,
     required: false,
   },
-  // work: {
-  //   type: String,
-  //   required: false,
-  // },
-  // user_role: {
-  //   type: String,
-  //   required: true,
-  // },
   graduation: {
     type: Number,
-    // required: true,
     required: false,
-
   },
   branch: {
     type: String,
@@ -43,14 +29,29 @@ const userSchema = new mongooose.Schema({
     type: String,
     required: true,
   },
-  // cpassword: {
-  //   type: String,
-  //   required: false,
-  // },
+  location: {
+    latitude: {
+      type: Number,
+      required: false,
+    },
+    longitude: {
+      type: Number,
+      required: false,
+    }
+  },
+  friends: [{
+    friendId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+    },
+    status: {
+      type: String,
+      enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'BLOCKED'],
+      default: 'PENDING',
+    },
+  }],
 });
 
-const User = mongooose.model("user", userSchema);
-
-// module.exports = User;
+const User = mongoose.model("user", userSchema);
 
 export default User;

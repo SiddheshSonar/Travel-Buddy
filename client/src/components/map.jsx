@@ -7,7 +7,6 @@ import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
 import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./cust.css"
 import { toast } from 'react-toastify';
-import { scaleFadeConfig } from '@chakra-ui/react';
 import APIRequests from '@/api';
 
 const MyMap = () => {
@@ -52,7 +51,7 @@ const MyMap = () => {
   React.useEffect(() => {
     APIRequests.getHome().then((res) => {
       if (res.status == 200) {
-        console.log("fetch home location:",res.data)
+        // console.log("fetch home location:", res.data)
         setHomeLocation(res.data.location);
       }
 
@@ -104,7 +103,6 @@ const MyMap = () => {
             className={`rounded-full w-12 h-12 flex items-center justify-center ${isEditingHomeLocation ? 'bg-red-600' : 'bg-gray-500'}`}
             style={{ backgroundColor: '#00000099' }}
             onClick={async () => {
-
               if (!isEditingHomeLocation) {
                 setIsEditingHomeLocation(true);
                 if (!homeLocation) setHomeLocation(location);
@@ -116,14 +114,13 @@ const MyMap = () => {
                     longitude: homeLocation.longitude,
                   }
                 }).then((res) => {
-                  if(res.status == 200) toast.success("Home location set successfully", toastConfig);
-                  else if(res.status == 400) toast.error("User not found", toastConfig);
+                  if (res.status == 200) toast.success("Home location set successfully", toastConfig);
+                  else if (res.status == 400) toast.error("User not found", toastConfig);
                   else toast.error("Error setting home location", toastConfig);
                 }).catch((err) => {
                   toast.error("Error setting home location", toastConfig);
                 }
                 )
-
               }
             }}
           >
@@ -150,7 +147,6 @@ const MyMap = () => {
             longitude={homeLocation.longitude}
             draggable={isEditingHomeLocation}
             onDragEnd={(event) => {
-              // console.log("Home location set to:", event)
               setHomeLocation({
                 latitude: event.lngLat.lat,
                 longitude: event.lngLat.lng,

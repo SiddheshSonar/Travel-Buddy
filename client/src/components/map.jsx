@@ -1,8 +1,7 @@
 "use client"
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React, { useCallback } from "react";
-import { useRef } from 'react';
+import React, { useCallback, useRef, useState } from "react";
 import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
 import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./cust.css"
@@ -13,6 +12,8 @@ const MyMap = () => {
   const mapRef = useRef();
 
   const [location, setLocation] = React.useState({});
+
+  const [users, setUsers] = React.useState([]);
 
   const fly = useCallback(({ longitude, latitude }) => {
     mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
@@ -57,10 +58,19 @@ const MyMap = () => {
           setHomeLocation(res.data.location);
         }
       }
-
     }).catch((err) => {
       console.log("error fetching home", err)
     })
+
+    APIRequests.getAllUsers().then((res) => {
+      // console.log("users", res.data.users)
+      if(res.status == 200) {
+        setUsers(res.data.users);
+      }
+    }).catch((err) => {
+      console.log("error fetching users", err)
+    }
+    )
     getCurrentLocation();
   }, []);
 
@@ -160,6 +170,22 @@ const MyMap = () => {
           </Marker>
         )}
 
+        {users.map((user) => {
+          if (user.location && user.location.latitude && user.location.longitude) {
+            return (
+              <Marker
+                latitude={user.location.latitude}
+                longitude={user.location.longitude}
+                draggable={false}
+                scale={0.5}
+              >
+                <FriendMarker name={user.name}  />
+              </Marker>
+            )
+          }
+        }
+        )}
+
       </ReactMapGL>
     </div>
   );
@@ -187,3 +213,40 @@ const CustomMarker = ({ imgSrc }) => {
     </div>
   )
 }
+
+
+const FriendMarker = ({ imgSrc, name }) => {
+  const defaultImage = 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg';
+
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const [randomColor] = useState(getRandomColor);
+
+  const markerStyle = {
+    backgroundImage: `linear-gradient(${randomColor}44, ${randomColor}44), url(${imgSrc || defaultImage})`, // Adjusted opacity to 44 (about 26%)
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  };
+
+  return (
+    <div className="relative">
+      <div style={{
+        backgroundColor: randomColor,
+      }} className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs text-white font-bold shadow-md bg-gray-200 px-2 py-1 rounded-lg"> {/* Added more top offset and styles for the chip */}
+        {name}
+      </div>
+      <div className="w-10 h-10 rounded-full border-2 border-white" style={markerStyle}></div>
+      <div className="pin-after w-0 h-0 mt-1 border-l-3 border-transparent border-r-3 border-transparent border-b-4 border-gray-600 inline-block"></div>
+    </div>
+  )
+}
+
+

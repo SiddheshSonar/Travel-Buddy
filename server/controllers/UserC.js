@@ -38,6 +38,20 @@ class UserController {
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
+    async getAll (req, res) {
+        try {
+            const uid = req.userID;
+            // this is my uid, i want all users other than mine who have the their location as set
+            // i don't want all data, i want only name, location and _id
+            // const users = await User.find({ _id: { $ne: uid }, location: { $ne: null } });
+            const users = await User.find({ _id: { $ne: uid }, location: { $ne: null } }).select("name location");
+            return res.status(200).json({ users });
+            // get only those users whose location is not null
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 export default UserController;

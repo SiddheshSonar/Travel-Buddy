@@ -8,6 +8,7 @@ import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./cust.css"
 import { toast } from 'react-toastify';
 import APIRequests from '@/api';
+import ChatDrawer from './drawer';
 
 const MyMap = () => {
   const mapRef = useRef();
@@ -80,6 +81,7 @@ const MyMap = () => {
       width: "100%",
       height: "100vh",
     }}>
+      <ChatDrawer />
       <ReactMapGL
         ref={mapRef}
         // {...viewport}

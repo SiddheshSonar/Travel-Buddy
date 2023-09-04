@@ -10,10 +10,11 @@ import Logo from '../assets/TB-logo.png'
 import Image from 'next/image'
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { useRouter, usePathname } from 'next/navigation';
-
+import FriendModal from '@/components/friendModal';
 
 const NavB = () => {
     const [name, setName] = useState(null);
+    const [modal, setModal] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -24,6 +25,9 @@ const NavB = () => {
 
     const blacklistedRoutes = ['/auth'];
 
+    const handleFriends = () => {
+        setModal(!modal);
+    }
 
     const handleLogout = () => {
         localStorage.clear();
@@ -47,7 +51,7 @@ const NavB = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg='dark' variant='dark'>
             <Container>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="/">
                     <Image src={Logo} roundedCircle width="50"
                         height="50" className="d-inline-block align-top"
                     />
@@ -58,9 +62,8 @@ const NavB = () => {
                     <Nav className="ms-auto">
                         {name && name != -1 ? (
                             <>
-                                <Nav.Link href="#home">Home</Nav.Link>
-                                <Nav.Link href="#chat">Chat</Nav.Link>
-                                <Nav.Link href="#friends">Friends</Nav.Link>
+                                <Nav.Link href="/">Home</Nav.Link>
+                                <Nav.Link onClick={handleFriends}>Friends</Nav.Link>
                                 <Dropdown>  
                                     <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                         {name}
@@ -90,6 +93,7 @@ const NavB = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
+            <FriendModal modal={modal} setModal={setModal} />
         </Navbar>
     );
 };

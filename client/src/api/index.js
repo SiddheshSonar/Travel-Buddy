@@ -30,6 +30,9 @@ class APIRequests {
   static async getHome() {
     return await API.get("/user/home");
   }
+  static async getAllUsers() {
+    return await API.get("/user/location");
+  }
 }
 
 export default APIRequests;

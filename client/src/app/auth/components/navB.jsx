@@ -35,11 +35,11 @@ const NavB = () => {
         router.push('/auth');
     }
 
-    useEffect(() => {
-        // console.log("path:",pathname);
+    // useEffect(() => {
+    //     // console.log("path:",pathname);
 
 
-    }, [pathname]);
+    // }, [pathname]);
 
     if (blacklistedRoutes.includes(pathname)) return null;
 

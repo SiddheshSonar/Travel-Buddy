@@ -10,5 +10,6 @@ const uC = new UserController();
 
 uR.post("/home", auth,  uC.updateLocation);
 uR.get("/home", auth, uC.getHome);
+uR.get("/location", auth, uC.getAll)
 
 export default uR;

@@ -14,8 +14,8 @@ const MyMap = () => {
 
   const [location, setLocation] = React.useState({});
 
-  const fly = useCallback(({longitude, latitude}) => {
-    mapRef.current?.flyTo({center: [longitude, latitude], duration: 2000});
+  const fly = useCallback(({ longitude, latitude }) => {
+    mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
   }, []);
 
   const getCurrentLocation = () => {
@@ -26,7 +26,7 @@ const MyMap = () => {
             setLocation(position.coords);
             const lat = isNaN(position.coords.latitude) ? 19.12315995904184 : position.coords.latitude;
             const long = isNaN(position.coords.longitude) ? 72.83611545347907 : position.coords.longitude;
-            fly({longitude: long, latitude: lat});
+            fly({ longitude: long, latitude: lat });
           },
           function (error) {
             toast.error(error.message, toastConfig);
@@ -52,7 +52,10 @@ const MyMap = () => {
   React.useEffect(() => {
     APIRequests.getHome().then((res) => {
       if (res.status == 200) {
-        setHomeLocation(res.data.location);
+        const { latitude, longitude } = res.data.location;
+        if (latitude && longitude) {
+          setHomeLocation(res.data.location);
+        }
       }
 
     }).catch((err) => {

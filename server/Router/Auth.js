@@ -93,7 +93,7 @@ authRouter.post("/otp", async (req, res) => {
         { uid: userLogin._id, name:userLogin.name},
         secretKey,
         {
-          expiresIn: "24h",
+          expiresIn: "365d",
         }
       );
       return res.status(200).json({

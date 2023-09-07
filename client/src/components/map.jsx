@@ -65,7 +65,7 @@ const MyMap = () => {
 
     APIRequests.getAllUsers().then((res) => {
       // console.log("users", res.data.users)
-      if(res.status == 200) {
+      if (res.status == 200) {
         setUsers(res.data.users);
       }
     }).catch((err) => {
@@ -84,14 +84,19 @@ const MyMap = () => {
 
   const [isEditingHomeLocation, setIsEditingHomeLocation] = React.useState(false);
   const [homeLocation, setHomeLocation] = React.useState(null);
-
-
+  const [isChat, setIsChat] = React.useState(false);
+  const [chatUser, setChatUser] = React.useState(null);
   return (
     <div style={{
       width: "100%",
       height: "100vh",
     }}>
-      <ChatDrawer />
+      <ChatDrawer isOpen={isChat} onClose={
+        () => {
+          setIsChat(false);
+          setChatUser(null);
+        }}
+        user={chatUser} />
       <ReactMapGL
         ref={mapRef}
         // {...viewport}
@@ -151,7 +156,7 @@ const MyMap = () => {
           (<Marker
             latitude={location.latitude}
             longitude={location.longitude}
-            draggable={true}
+            // draggable={true}
             scale={0.5}
           >
             <CustomMarker />
@@ -180,8 +185,16 @@ const MyMap = () => {
                 longitude={user.location.longitude}
                 draggable={false}
                 scale={0.5}
+                onClick={
+                  // console.log("clicked", user)
+                  () => {
+                    // console.log("clicked", user)
+                    setChatUser(user);
+                    setIsChat(true);
+                  }
+                }
               >
-                <FriendMarker name={user.name}  />
+                <FriendMarker name={user.name} />
               </Marker>
             )
           }

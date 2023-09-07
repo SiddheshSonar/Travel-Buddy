@@ -5,7 +5,7 @@ class UserController {
 
     async updateLocation (req, res) {
         try {
-            console.log("updateLocation")
+            // console.log("updateLocation")
             const { location } = req.body;
             const uid = req.userID;
             console.log(location, uid)

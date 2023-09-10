@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { CircularProgress, useDisclosure } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react"
 import {
   Drawer,
   DrawerBody,
@@ -13,22 +12,40 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react'
 
-export default function ChatDrawer({ isOpen, onClose, user }) {
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleChat } from "@/redux/reducers/chatReducer";
+
+export default function ChatDrawer() {
+
+  const user = useSelector(state => state.chat.user);
+  const dispatch = useDispatch();
+  const {onOpen, onClose } = useDisclosure()
+
+  const isOpen = useSelector(state => state.chat.isOpen);
+
+  React.useEffect(() => {
+      if (isOpen) {
+          onOpen();
+      }
+  }, [isOpen]);
 
 
   return (
     <>
-      <Drawer onClose={onClose} isOpen={isOpen} size="md">
+      <Drawer onClose={() => {
+        dispatch(toggleChat(false));
+        onClose();
+      }} isOpen={isOpen} size="md" height="100vh">
         <DrawerOverlay />
         <DrawerContent sx={
           {
             backdropFilter: "blur(3px)",
-        backgroundColor: "rgba(173, 234, 234, 0.3)",
-        borderRadius: "20px 0 0 20px",
+            backgroundColor: "rgba(173, 234, 234, 0.3)",
+            borderRadius: "20px 0 0 20px",
           }
         }>
-          <DrawerCloseButton 
-          color={"white"}
+          <DrawerCloseButton
+            color={"white"}
           />
           {user && user.name && (
             <DrawerHeader sx={
@@ -41,13 +58,13 @@ export default function ChatDrawer({ isOpen, onClose, user }) {
           <DrawerBody>
             <p>
               {/* Chat Drawer */}
-            <CircularProgress isIndeterminate color="green.300" sx={{
+              <CircularProgress isIndeterminate color="green.300" sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
 
-            }} />
+              }} />
             </p>
           </DrawerBody>
         </DrawerContent>

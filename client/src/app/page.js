@@ -4,6 +4,8 @@ import { Button } from "@chakra-ui/react";
 import MyMap from '@/components/map'
 import React from 'react'
 import { useRouter } from "next/navigation";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 export default function Home() {
   const [user, setUser] = React.useState(0);
@@ -14,6 +16,7 @@ export default function Home() {
   }, []);
 
   return (
+    <Provider store={store}>
     <div className="relative">
       <MyMap/>
       {user == -1 && (
@@ -29,5 +32,6 @@ export default function Home() {
         </div>
       )}
     </div>
+    </Provider>
   );
 }

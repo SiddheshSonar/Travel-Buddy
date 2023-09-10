@@ -16,9 +16,11 @@ const Login = () => {
     password: ""
   });
 
+  React.useEffect(() => {
   if (localStorage.getItem("isIn") === 'true') {
     window.location.href = "/";
   }
+  }, []);
 
   const handleChange = (e) => {
     setUserDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));

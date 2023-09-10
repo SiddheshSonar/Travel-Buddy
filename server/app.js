@@ -13,6 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // const baseR = express.Router();
 // app.use("/api", baseR);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 app.use("/auth", authRouter);
 app.use("/user", uR);
 
@@ -22,3 +25,5 @@ app.listen(PORT, () => {
   init()
   console.log(`Server @ http://localhost:${PORT}`);
 });
+
+export default app;

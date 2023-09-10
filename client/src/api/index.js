@@ -2,7 +2,8 @@ import axios from "axios";
 
 const API = axios.create({
   // baseURL: "https://kvh.serveo.net",
-  baseURL: "http://localhost:5000",
+  // baseURL: "http://localhost:5000",
+  baseURL: "https://travel-buddy-server-dtxs6j36e-stephenvaz.vercel.app",
 });
 
 API.interceptors.request.use((req) => {

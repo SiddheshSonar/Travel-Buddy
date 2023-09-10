@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 import APIRequests from '@/api';
 import ChatDrawer from './drawer';
 
-import { useDispatch } from 'react-redux';
-import {setUser, toggleChat} from '@/redux/reducers/chatReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import {setUser, toggleChat, setUsers} from '@/redux/reducers/chatReducer';
 
 const MyMap = () => {
   const mapRef = useRef();
@@ -18,7 +18,9 @@ const MyMap = () => {
 
   const [location, setLocation] = React.useState({});
 
-  const [users, setUsers] = React.useState([]);
+  const users = useSelector(state => state.chat.users);
+
+  // const [users, setUsers] = React.useState([]);
 
   const fly = useCallback(({ longitude, latitude }) => {
     mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
@@ -75,9 +77,9 @@ const MyMap = () => {
     })
 
     APIRequests.getAllUsers().then((res) => {
-      // console.log("users", res.data.users)
+      console.log("users", res.data.users)
       if (res.status == 200) {
-        setUsers(res.data.users);
+        dispatch(setUsers(res.data.users));
       }
     }).catch((err) => {
       console.log("error fetching users", err)
@@ -104,23 +106,13 @@ const MyMap = () => {
       width: "100%",
       height: "100vh",
     }}>
-      <ChatDrawer
-      //  isOpen={isChat} closeCall={
-      //   () => {
-      //     setIsChat(false);
-      //     setChatUser(null);
-      //   }}
-      //   user={chatUser} 
-        />
+      <ChatDrawer/>
       <ReactMapGL
         ref={mapRef}
-        // {...viewport}
         initialViewState={viewport}
         interactive={true}
-
         mapStyle="mapbox://styles/gnsmtest/cllxwulk000kv01peb9yk15a9"
         onMove={evt => setViewport(evt.viewState)}
-
         mapboxAccessToken={"pk.eyJ1IjoiZ25zbXRlc3QiLCJhIjoiY2xseHc5d3plMmt0eDNlcGU4NmN2eXk4aCJ9.qjuYscqJ5dSJMS3XJYmmxQ"}
       >
         <div style={{ position: 'absolute', left: 10, top: 10 }} className='flex flex-col'>
@@ -171,7 +163,6 @@ const MyMap = () => {
           (<Marker
             latitude={location.latitude}
             longitude={location.longitude}
-            // draggable={true}
             scale={0.5}
           >
             <CustomMarker />
@@ -192,7 +183,7 @@ const MyMap = () => {
           </Marker>
         )}
 
-        {users.map((user) => {
+        {users.map((user, index) => {
           if (user.location && user.location.latitude && user.location.longitude) {
             return (
               <Marker
@@ -204,14 +195,8 @@ const MyMap = () => {
                 onClick={
                   // console.log("clicked", user)
                   () => {
-                    dispatch(setUser(user));
+                    dispatch(setUser(index));
                     dispatch(toggleChat(true));
-                    // console.log("clicked", user)
-                    // setChatUser(user);
-                    // setIsChat(true);
-                    // use the chat redux store to set the user
-
-
                   }
                 }
               >

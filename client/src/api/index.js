@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API = axios.create({
   // baseURL: "https://kvh.serveo.net",
-  // baseURL: "http://localhost:5000",
-  baseURL: "https://travel-buddy-server-two.vercel.app",
+  baseURL: "http://localhost:5000",
+  // baseURL: "https://travel-buddy-server-two.vercel.app",
 });
 
 API.interceptors.request.use((req) => {
@@ -45,6 +45,12 @@ class APIRequests {
   }
   static async getAllUsers() {
     return await API.get("/user/location");
+  }
+  static async sendFriendRequest(id) {
+    return await API.post(`/user/friend/${id}`);
+  }
+  static async acceptFriendRequest(id) {
+    return await API.post(`/user/friend/accept/${id}`);
   }
 }
 

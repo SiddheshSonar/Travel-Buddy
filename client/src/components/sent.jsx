@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import "./friends.css"
 
-const Sent = () => {
-    const [sentFollowRequests, setSentFollowRequests] = useState([
-        { id: 3, name: 'Eva Martinez', status: 'pending' },
-        { id: 4, name: 'David Wilson', status: 'accepted' },
-        // Add more sent follow requests here
-      ]);
-
+const Sent = ({ sent }) => {
     return (
         <div>
             <ul className="sent-follow-requests-list">
-                {sentFollowRequests.map((request) => (
-                    <li key={request.id} className="sent-follow-request">
+                {sent.map((request) => (
+                    <li key={request._id} className="sent-follow-request">
                         <div className="request-info">
                             <span className="request-name">{request.name}</span>
-                            <span className={`request-status ${request.status}`}>{request.status === 'pending' ? 'Pending' : 'Accepted'}</span>
+                            {/* <span className={`request-status ${request.status}`}>{request.status === 'pending' ? 'Pending' : 'Accepted'}</span> */}
                         </div>
                     </li>
                 ))}
+                {sent && sent.length === 0 && <li className="no-sent-requests" style={{
+                    textAlign: 'center',
+                }}>No pending requests</li>}
             </ul>
         </div>
     )

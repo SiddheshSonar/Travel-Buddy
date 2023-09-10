@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { useRouter, usePathname } from 'next/navigation';
 import FriendModal from '@/components/friendModal';
+import { Provider } from 'react-redux';
+import store from '@/redux/store';
 
 const NavB = () => {
     const [name, setName] = useState(null);
@@ -41,7 +43,7 @@ const NavB = () => {
         <Navbar collapseOnSelect expand="lg" bg='dark' variant='dark'>
             <Container>
                 <Navbar.Brand href="/">
-                    <Image src={Logo} roundedCircle width="50"
+                    <Image src={Logo} width="50"
                         height="50" className="d-inline-block align-top"
                     />
                     Travel Buddy
@@ -82,7 +84,9 @@ const NavB = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
+            <Provider store={store}>
             <FriendModal modal={modal} setModal={setModal} />
+            </Provider>
         </Navbar>
     );
 };

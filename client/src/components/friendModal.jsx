@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
 import { useForm, Controller, set } from 'react-hook-form';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import APIRequests from '@/api';
 import Friends from './friends';
 import Requests from './requests';
 import Sent from './sent';
+import "./friends.css"
+
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleChat, addStatus, setUser } from "@/redux/reducers/chatReducer";
 
 const FriendModal = ({ modal, setModal }) => {
+
+    const users = useSelector(state => state.chat.users);
+
+    const friends = users.filter(user => user.status === "ACCEPTED");
+
+    const requests = users.filter(user => user.status === "PENDING");
+
+    const sent = users.filter(user => user.status === "SENT");
 
     const toggle = () => setModal(!modal);
 
     return (
-        <Modal isOpen={modal} toggle={toggle} style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "50%",
-        }}>
+        <Modal isOpen={modal} toggle={toggle} centered className="friend-modal">
             <ModalHeader toggle={toggle}>Friends Details</ModalHeader>
             <ModalBody>
                 <div>
@@ -31,25 +37,20 @@ const FriendModal = ({ modal, setModal }) => {
                         </TabList>
                         <TabPanels>
                             <TabPanel>
-                                <Requests />
+                                <Requests requests={requests} />
                             </TabPanel>
                             <TabPanel>
-                                <Friends />
+                                <Friends friends={friends} />
                             </TabPanel>
                             <TabPanel>
-                                <Sent />
+                                <Sent sent={sent} />
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
                 </div>
-                <ModalFooter>
-                    <Button color="primary" onClick={toggle}>
-                        Cancel
-                    </Button>
-                </ModalFooter>
             </ModalBody>
         </Modal>
     );
 };
 
-export default FriendModal;
+export default FriendModal; 

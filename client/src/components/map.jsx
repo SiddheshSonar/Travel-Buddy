@@ -196,6 +196,7 @@ const MyMap = () => {
           if (user.location && user.location.latitude && user.location.longitude) {
             return (
               <Marker
+                key={user._id}
                 latitude={user.location.latitude}
                 longitude={user.location.longitude}
                 draggable={false}

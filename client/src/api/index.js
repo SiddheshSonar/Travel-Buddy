@@ -13,6 +13,18 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+API.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.location.href = "/auth";
+    }
+    return Promise.reject(error);
+  }
+);
+
 
 class APIRequests {
   static async signIn(data) {

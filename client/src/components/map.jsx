@@ -9,8 +9,12 @@ import { toast } from 'react-toastify';
 import APIRequests from '@/api';
 import ChatDrawer from './drawer';
 
+import { useDispatch } from 'react-redux';
+import {setUser, toggleChat} from '@/redux/reducers/chatReducer';
+
 const MyMap = () => {
   const mapRef = useRef();
+  const dispatch = useDispatch();
 
   const [location, setLocation] = React.useState({});
 
@@ -52,6 +56,13 @@ const MyMap = () => {
   };
 
   React.useEffect(() => {
+
+    // check in local storage if profile key exists
+
+    if (!localStorage.getItem("profile")) {
+      return;
+    }
+
     APIRequests.getHome().then((res) => {
       if (res.status == 200) {
         const { latitude, longitude } = res.data.location;
@@ -76,6 +87,8 @@ const MyMap = () => {
   }, []);
 
 
+
+
   const [viewport, setViewport] = React.useState({
     latitude: 19.12315995904184,
     longitude: 72.83611545347907,
@@ -84,19 +97,21 @@ const MyMap = () => {
 
   const [isEditingHomeLocation, setIsEditingHomeLocation] = React.useState(false);
   const [homeLocation, setHomeLocation] = React.useState(null);
-  const [isChat, setIsChat] = React.useState(false);
-  const [chatUser, setChatUser] = React.useState(null);
+  // const [isChat, setIsChat] = React.useState(false);
+  // const [chatUser, setChatUser] = React.useState(null);
   return (
     <div style={{
       width: "100%",
       height: "100vh",
     }}>
-      <ChatDrawer isOpen={isChat} onClose={
-        () => {
-          setIsChat(false);
-          setChatUser(null);
-        }}
-        user={chatUser} />
+      <ChatDrawer
+      //  isOpen={isChat} closeCall={
+      //   () => {
+      //     setIsChat(false);
+      //     setChatUser(null);
+      //   }}
+      //   user={chatUser} 
+        />
       <ReactMapGL
         ref={mapRef}
         // {...viewport}
@@ -188,9 +203,14 @@ const MyMap = () => {
                 onClick={
                   // console.log("clicked", user)
                   () => {
+                    dispatch(setUser(user));
+                    dispatch(toggleChat(true));
                     // console.log("clicked", user)
-                    setChatUser(user);
-                    setIsChat(true);
+                    // setChatUser(user);
+                    // setIsChat(true);
+                    // use the chat redux store to set the user
+
+
                   }
                 }
               >
@@ -200,12 +220,10 @@ const MyMap = () => {
           }
         }
         )}
-
       </ReactMapGL>
     </div>
   );
 };
-
 
 export default MyMap;
 

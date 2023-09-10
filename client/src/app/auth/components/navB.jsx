@@ -28,26 +28,15 @@ const NavB = () => {
     const handleFriends = () => {
         setModal(!modal);
     }
-
     const handleLogout = () => {
         localStorage.clear();
         setName(null);
         window.location.reload();
     }
-
     const handleLogin = () => {
         router.push('/auth');
     }
-
-    // useEffect(() => {
-    //     // console.log("path:",pathname);
-
-
-    // }, [pathname]);
-
     if (blacklistedRoutes.includes(pathname)) return null;
-
-
     return (
         <Navbar collapseOnSelect expand="lg" bg='dark' variant='dark'>
             <Container>

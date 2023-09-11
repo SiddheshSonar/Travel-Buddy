@@ -12,6 +12,7 @@ import ChatDrawer from './drawer';
 import { useDispatch, useSelector } from 'react-redux';
 import {setUser, toggleChat, setUsers} from '@/redux/reducers/chatReducer';
 
+
 const MyMap = () => {
   const mapRef = useRef();
   const dispatch = useDispatch();
@@ -101,6 +102,9 @@ const MyMap = () => {
   const [homeLocation, setHomeLocation] = React.useState(null);
   // const [isChat, setIsChat] = React.useState(false);
   // const [chatUser, setChatUser] = React.useState(null);
+
+
+
   return (
     <div style={{
       width: "100%",

@@ -8,6 +8,10 @@ import VerifyEmailForm from './components/verifyPin';
 import { Button } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import RegisterModal from './components/registerModal';
+import Script from 'next/script';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const Login = () => {
   const [modal, setModal] = useState(false);
@@ -128,6 +132,17 @@ const Login = () => {
           </div>
         </form>
       </motion.div>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GCP_API}&libraries=places`}
+        strategy="beforeInteractive"
+        // onReady={
+        //   () => {
+        //     // console.log("loaded script");
+            
+        //   }
+        // }
+      />
+
       <RegisterModal modal={modal} setModal={setModal}/>
     </div>
   )

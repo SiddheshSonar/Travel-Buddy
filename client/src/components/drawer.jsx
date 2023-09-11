@@ -113,7 +113,7 @@ const statusIcon = (status, id, selectedUser) => {
     return <FiUserCheck color="white" size={"25px"} />
   }
   else if (status == "SENT") {
-    return <LiaHourglassEndSolid color="white" size={"25px"} 
+    return <LiaHourglassEndSolid color="white" size={"25px"}
       onClick={() => {
         toast.info("Friend request already sent", toastConfig);
       }}
@@ -123,7 +123,7 @@ const statusIcon = (status, id, selectedUser) => {
     return <LiaTimesSolid color="white" size={"25px"} />
   }
   else if (status == "BLOCKED") {
-    return <LiaBanSolid color="white" size={"25px"} 
+    return <LiaBanSolid color="white" size={"25px"}
       onClick={() => {
         toast.error("You have been blocked by this user", toastConfig);
       }}
@@ -137,7 +137,7 @@ const statusIcon = (status, id, selectedUser) => {
         alignItems: 'center',
         // width: '100%'
       }}>
-        <Button variant="outline" colorScheme="green" size="sm" marginRight="5px" onClick={() =>{
+        <Button variant="outline" colorScheme="green" size="sm" marginRight="5px" onClick={() => {
           APIRequests.acceptFriendRequest(id).then((res) => {
             if (res.status == 200) {
               toast.success("Friend request accepted!", toastConfig);
@@ -151,7 +151,7 @@ const statusIcon = (status, id, selectedUser) => {
             toast.error("Error accepting friend request", toastConfig);
           });
         }}>Accept</Button>
-        <Button variant="outline"  colorScheme="red" size="sm" onClick={() =>{}}>Reject</Button>
+        <Button variant="outline" colorScheme="red" size="sm" onClick={() => { }}>Reject</Button>
       </div>
     )
   }
@@ -160,17 +160,28 @@ const statusIcon = (status, id, selectedUser) => {
       () => {
         APIRequests.sendFriendRequest(id).then((res) => {
           if (res.status == 200) {
-            toast.success("Friend request sent!", toastConfig);
-            dispatch(addStatus({
-              i: selectedUser,
-              status: "SENT"}));
+            if (res.data.status == "SENT") {
+              toast.success("Friend request sent!", toastConfig);
+              dispatch(addStatus({
+                i: selectedUser,
+                status: "SENT"
+              }));
+            }
+            else if ( res.data.status == "ACCEPTED") {
+              toast.success("Friend request accepted!", toastConfig);
+              dispatch(addStatus({
+                i: selectedUser,
+                status: "ACCEPTED"
+              }));
+            }
+
           }
         }).catch((err) => {
           console.log("Error sending friend request", err);
           toast.error("Error sending friend request", toastConfig);
         });
       }
-    }/>
+    } />
   }
 }
 

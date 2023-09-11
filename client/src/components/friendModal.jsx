@@ -26,7 +26,10 @@ const FriendModal = ({ modal, setModal }) => {
 
     return (
         <Modal isOpen={modal} toggle={toggle} centered className="friend-modal">
-            <ModalHeader toggle={toggle}>Friends Details</ModalHeader>
+            <ModalHeader toggle={toggle} centered style={{
+                textAlign: "center",
+                width: "100%",
+            }}>Friends</ModalHeader>
             <ModalBody>
                 <div>
                     <Tabs isFitted variant='soft-rounded' colorScheme='blue'>

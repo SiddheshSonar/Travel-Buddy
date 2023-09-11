@@ -121,13 +121,12 @@ class UserController {
     async sendFriendRequest(req, res) {
         try {
             const uid = new mongoose.Types.ObjectId(req.userID);
-            const fid = new mongoose.Types.ObjectId(req.params.id); // Convert to ObjectId
+            const fid = new mongoose.Types.ObjectId(req.params.id);
     
             if (!fid) {
                 return res.status(400).json({ message: "Invalid user id" });
             }
     
-            // Fetching user and friend user documents
             const user = await User.findById(uid);
             const friendUser = await User.findById(fid);
     
@@ -138,29 +137,38 @@ class UserController {
                 return res.status(400).json({ message: "Friend user not found" });
             }
     
-            // Check if friend request already exists or the users are already friends
-            const friendRelation = user.friends.find(friend => friend.friendId.toString() === fid.toString());
-            if (friendRelation) {
-                return res.status(400).json({ message: "Friend request already sent or you are already friends" });
+            const friendRelationForUser = user.friends.find(friend => friend.friendId.toString() === fid.toString());
+            const friendRelationForFriendUser = friendUser.friends.find(friend => friend.friendId.toString() === uid.toString());
+    
+            // If both users have sent friend requests to each other
+            if (friendRelationForUser && friendRelationForFriendUser) {
+                friendRelationForUser.status = "ACCEPTED";
+                friendRelationForFriendUser.status = "ACCEPTED";
+                
+                await user.save();
+                await friendUser.save();
+    
+                return res.status(200).json({ message: "Friend request accepted", status: "ACCEPTED" });
+            }
+            
+            // If only the user has sent a request (or no requests were sent yet)
+            if (!friendRelationForUser) {
+                user.friends.push({ friendId: fid, status: "SENT" });
+                await user.save();
             }
     
-            // Add friend request to user as SENT
-            user.friends.push({ friendId: fid, status: "SENT" });
-            await user.save();
+            if (!friendRelationForFriendUser) {
+                friendUser.friends.push({ friendId: uid, status: "PENDING" });
+                await friendUser.save();
+            }
     
-            // Add friend request to friend user as PENDING
-            friendUser.friends.push({ friendId: uid, status: "PENDING" });
-            await friendUser.save();
-
-            console.log(user, friendUser)
-    
-            return res.status(200).json({ message: "Friend request sent successfully" });
-    
+            return res.status(200).json({ message: "Friend request sent successfully", status: "SENT" });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: 'Server error' });
         }
     }
+    
 
     async acceptFriendRequest(req, res) {
         try {

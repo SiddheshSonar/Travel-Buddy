@@ -1,7 +1,7 @@
 "use client"
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactMapGL, { Marker, MapRef } from 'react-map-gl';
 import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./cust.css"
@@ -10,9 +10,9 @@ import APIRequests from '@/api';
 import ChatDrawer from './drawer';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {setUser, toggleChat, setUsers} from '@/redux/reducers/chatReducer';
+import { setUser, toggleChat, setUsers } from '@/redux/reducers/chatReducer';
 
-const MyMap = () => {
+const MyMap = ({ lat, long, forReg, sLL }) => {
   const mapRef = useRef();
   const dispatch = useDispatch();
 
@@ -57,10 +57,16 @@ const MyMap = () => {
     theme: "dark",
   };
 
+  useEffect(() => {
+    if (lat && long) {
+      fly({ longitude: long, latitude: lat });
+    }
+  }, [lat, long]);
+
   React.useEffect(() => {
 
     // check in local storage if profile key exists
-
+    if (forReg) return;
     if (!localStorage.getItem("profile")) {
       return;
     }
@@ -104,12 +110,19 @@ const MyMap = () => {
   return (
     <div style={{
       width: "100%",
-      height: "100vh",
+      // height: "100vh",
+      // if forReg is true, then set height to 50px
+      height: forReg ? "250px" : "100vh",
     }}>
-      <ChatDrawer/>
+      <ChatDrawer />
       <ReactMapGL
         ref={mapRef}
-        initialViewState={viewport}
+        // initialViewState={viewport}
+        initialViewState={lat && long && forReg ? {
+          latitude: lat,
+          longitude: long,
+          zoom: 13
+        } : { viewport }}
         interactive={true}
         mapStyle="mapbox://styles/gnsmtest/cllxwulk000kv01peb9yk15a9"
         onMove={evt => setViewport(evt.viewState)}
@@ -127,7 +140,9 @@ const MyMap = () => {
               color="lightblue"
             />
           </div>
-          <div
+
+          {/* {} */}
+          {/* <div
             className={`rounded-full w-12 h-12 flex items-center justify-center ${isEditingHomeLocation ? 'bg-red-600' : 'bg-gray-500'}`}
             style={{ backgroundColor: '#00000099' }}
             onClick={async () => {
@@ -157,7 +172,7 @@ const MyMap = () => {
               size={30}
               color={isEditingHomeLocation ? 'lightblue' : 'white'}
             />
-          </div>
+          </div> */}
         </div>
         {(location.latitude && location.longitude) &&
           (<Marker
@@ -182,6 +197,22 @@ const MyMap = () => {
           >
           </Marker>
         )}
+
+        {forReg && lat && long && (
+          <Marker
+            latitude={lat}
+            longitude={long}
+            draggable={true}
+            onDragEnd={(event) => {
+              sLL({
+                latitude: event.lngLat.lat,
+                longitude: event.lngLat.lng,
+              })
+            }}
+          >
+          </Marker>
+        )
+        }
 
         {users.map((user, index) => {
           if (user.location && user.location.latitude && user.location.longitude) {

@@ -16,8 +16,8 @@ authRouter.get("/", (req, res) => {
 });
 
 authRouter.post("/register", async (req, res) => {
-  const { name, email, password, graduation, branch } = req.body;
-  if (!name || !email ||  !password || !branch || !graduation) {
+  const { name, email, password, graduation, branch, location } = req.body;
+  if (!name || !email ||  !password || !branch || !graduation || !location || !location.latitude || !location.longitude) {
     return res.status(422).json({ error: "Please fill data correctly!" });
   }
   try {
@@ -32,7 +32,11 @@ authRouter.post("/register", async (req, res) => {
         "email": email,
         "password": password,
         "graduation": graduation,
-        "branch": branch
+        "branch": branch,
+        "location": {
+          "latitude": location.latitude,
+          "longitude": location.longitude
+        }
       })
       await user.save();
       res.status(200).json({ message: "User Registered Successfully!" });

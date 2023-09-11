@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, CircularProgress, useDisclosure } from "@chakra-ui/react";
 import {
   Drawer,
@@ -20,9 +20,13 @@ import { FiUserCheck } from "react-icons/fi";
 import APIRequests from "@/api";
 import { toast } from "react-toastify";
 import { LiaHourglassEndSolid, LiaTimesSolid, LiaBanSolid } from "react-icons/lia";
+import io from 'socket.io-client';
+import Chat from "./Chat";
+
+const socket = io.connect("http://localhost:5001")
 
 export default function ChatDrawer() {
-
+  const [myInfo, setMyInfo] = useState(JSON.parse(localStorage.getItem("profile")));
   const selectedUser = useSelector(state => state.chat.selectedUser);
 
   const user = useSelector(state => state.chat.users[selectedUser]);
@@ -32,9 +36,14 @@ export default function ChatDrawer() {
 
   const isOpen = useSelector(state => state.chat.isOpen);
 
-  React.useEffect(() => {
+  // useEffect
+
+  useEffect(() => {
     if (isOpen) {
       onOpen();
+    }
+    if (user && user.status == "ACCEPTED") {
+      socket.emit("join_room", user._id + myInfo.uid)
     }
   }, [isOpen]);
 
@@ -63,14 +72,7 @@ export default function ChatDrawer() {
 
           <DrawerBody>
             {user && user.status == "ACCEPTED" ? (
-              <p>
-                <CircularProgress isIndeterminate color="green.300" sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }} />
-              </p>
+                <Chat socket={socket} receiver={user} sender={myInfo} room={user._id + myInfo.uid}/>
             ) : user && (
               <div style={{
                 display: 'flex',

@@ -4,8 +4,6 @@ import PlacesAutocomplete, {
     getLatLng,
 } from 'react-places-autocomplete';
 
-import Script from 'next/script';
-
 
 import "./location.css";
 

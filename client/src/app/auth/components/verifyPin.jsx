@@ -23,10 +23,6 @@ import APIRequests from "@/api";
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify';
 
-
-//   import { ActionTypes, auth } from "../reducers/auth";
-//   import { useAppDispatch } from "../store";
-
 export default function VerifyEmailForm({ open, handleClose, email }) {
     const [pin, setPin] = useState("");
     const router = useRouter()

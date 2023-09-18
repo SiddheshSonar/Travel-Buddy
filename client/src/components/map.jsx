@@ -107,6 +107,9 @@ const MyMap = ({ lat, long, forReg, sLL }) => {
   const [homeLocation, setHomeLocation] = React.useState(null);
   // const [isChat, setIsChat] = React.useState(false);
   // const [chatUser, setChatUser] = React.useState(null);
+
+
+
   return (
     <div style={{
       width: "100%",

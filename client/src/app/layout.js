@@ -5,6 +5,10 @@ import { ToastContainer } from 'react-toastify';
 import NavB from './auth/components/navB';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRouter } from 'next/navigation';
+import io from 'socket.io-client';
+
+const socket = io.connect("http://localhost:5001")
 
 const inter = Inter({ subsets: ['latin'] })
 

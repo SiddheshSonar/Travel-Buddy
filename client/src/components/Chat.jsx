@@ -34,6 +34,9 @@ const Chat = ({ socket, receiver, sender, room }) => {
 
     useEffect(() => {
         console.log(messageList)
+        // scroll to bottom of chat box when new msg is added
+        const chatBox = document.getElementById('chatBox')
+        chatBox.scrollTop = chatBox.scrollHeight
     }, [messageList])
 
     // sending msg on pressing enter
@@ -48,18 +51,18 @@ const Chat = ({ socket, receiver, sender, room }) => {
             <div className='w-full text-center text-xl text-white font-bold'>
                 Your Chats
             </div>
-            <div className='flex flex-col gap-2 h-3/4 rounded-t-xl bg-white border overflow-y-scroll p-2.5'>
+            <div className='flex flex-col gap-2 h-3/4 rounded-t-xl bg-white border overflow-y-scroll p-2.5' id='chatBox'>
                 {messageList.map((val, key) => {
                     return (
                         <div key={key} className={`${val.author === sender.name ? "self-end" : "self-start"} w-1/2`}>
-                            <div className='w-full text center border rounded-xl flex flex-col items-start justify-center p-2.5'>
+                            <div className='w-full text center border rounded-xl flex flex-col items-start justify-center p-2.5 break-words'>
                                 <div className={`${val.author === sender.name ? "text-send" : "text-rec"} font-bold text-xs`}>
                                     {val.author === sender.name ? "You" : val.author}
                                 </div>
-                                <div>
+                                <div className='w-full'>
                                     {val.message}
                                 </div>
-                                <div className='text-xs self-end'>
+                                <div className='text-xs self-end font-light'>
                                     {val.time}
                                 </div>
                             </div>

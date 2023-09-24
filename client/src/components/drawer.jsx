@@ -35,6 +35,8 @@ export default function ChatDrawer() {
   const { onOpen, onClose } = useDisclosure()
 
   const isOpen = useSelector(state => state.chat.isOpen);
+  console.log("user", user)
+  console.log("myInfo", myInfo)
 
   // useEffect
 
@@ -43,7 +45,7 @@ export default function ChatDrawer() {
       onOpen();
     }
     if (user && user.status == "ACCEPTED") {
-      socket.emit("join_room", user._id + myInfo.uid)
+      socket.emit("join_room", (user.location.latitude + myInfo.location.latitude))
     }
   }, [isOpen]);
 
@@ -72,7 +74,7 @@ export default function ChatDrawer() {
 
           <DrawerBody>
             {user && user.status == "ACCEPTED" ? (
-                <Chat socket={socket} receiver={user} sender={myInfo} room={user._id + myInfo.uid}/>
+                <Chat socket={socket} receiver={user} sender={myInfo} room={user.location.latitude + myInfo.location.latitude}/>
             ) : user && (
               <div style={{
                 display: 'flex',

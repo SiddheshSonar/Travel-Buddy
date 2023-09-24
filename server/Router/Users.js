@@ -13,5 +13,7 @@ uR.get("/home", auth, uC.getHome);
 uR.get("/location", auth, uC.getAll);
 uR.post("/friend/:id", auth, uC.sendFriendRequest);
 uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
+uR.post("/chat", uC.addChatHistory);
+uR.post("/get/chat", uC.getChatHistory);
 
 export default uR;

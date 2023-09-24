@@ -52,6 +52,12 @@ class APIRequests {
   static async acceptFriendRequest(id) {
     return await API.post(`/user/friend/accept/${id}`);
   }
+  static async sendChat(data) {
+    return await API.post("/user/chat", data);
+  }
+  static async getChat(data) {
+    return await API.post("/user/get/chat", data);
+  }
 }
 
 export default APIRequests;

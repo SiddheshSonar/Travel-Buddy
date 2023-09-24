@@ -9,6 +9,9 @@ module.exports = {
     colors: {
       "login": "#03e9f4",
       "register": "#03888f",
+      "white": "#ffffff",
+      "send": "#12486B",
+      "rec": "#6499E9",
     },
     extend: {
       backgroundImage: {

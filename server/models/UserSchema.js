@@ -52,6 +52,12 @@ const userSchema = new mongoose.Schema({
       enum: ['SENT','PENDING', 'ACCEPTED', 'REJECTED', 'BLOCKED'],
       default: 'PENDING',
     },
+    chatHistory: [{
+      author: {type: String},
+      message: {type: String},
+      room: {type: Number},
+      timestamp: {type: Date},
+    }],
   }],
 });
 

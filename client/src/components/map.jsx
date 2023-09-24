@@ -78,7 +78,7 @@ const MyMap = () => {
     })
 
     APIRequests.getAllUsers().then((res) => {
-      console.log("users", res.data.users)
+      console.log("users = ", res.data.users)
       if (res.status == 200) {
         dispatch(setUsers(res.data.users));
       }

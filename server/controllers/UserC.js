@@ -208,7 +208,68 @@ class UserController {
         }
     }
     
+    async addChatHistory(req, res) {
+        try {
+            const { message, sendId, recId } = req.body;
+            // console.log("sendId", sendId, "recId", recId)
+            const send = new mongoose.Types.ObjectId(sendId);
+            const rec = new mongoose.Types.ObjectId(recId);
+            // console.log("send", send, "rec", rec)
+            // console.log("message", message)
 
+            const sender = await User.findById(send);
+            if (sender) {
+                // find receiver in sender's friend list and save the message in chatHistory
+                const friendRelation = sender.friends.find(friend => friend.friendId.toString() === rec.toString());
+                if (friendRelation) {
+                    friendRelation.chatHistory.push(message);
+                    await sender.save();
+                    const receiver = await User.findById(rec);
+                    const friendRelationForReceiver = receiver.friends.find(friend => friend.friendId.toString() === send.toString());
+                    friendRelationForReceiver.chatHistory.push(message);
+                    await receiver.save();
+                    return res.status(200).json({ message: "Message sent successfully" });
+                }
+                else {
+                    return res.status(400).json({ message: "Friend not found" });
+                }
+            }
+            else {
+                return res.status(400).json({ message: "Sender not found" });
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Server error' });
+        }
+    }
+
+    async getChatHistory(req, res) {
+        try {
+            const { sendId, recId } = req.body;
+            const send = new mongoose.Types.ObjectId(sendId);
+            const rec = new mongoose.Types.ObjectId(recId);
+
+            const sender = await User.findById(send);
+            if (sender) {
+                // find receiver in sender's friend list and save the message in chatHistory
+                const friendRelation = sender.friends.find(friend => friend.friendId.toString() === rec.toString());
+                if (friendRelation) {
+                    return res.status(200).json({ chatHistory: friendRelation.chatHistory });
+                }
+                else {
+                    return res.status(400).json({ message: "Friend not found" });
+                }
+            }
+            else {
+                return res.status(400).json({ message: "Sender not found" });
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Server error' });
+        }
+    }
 }
 
 export default UserController;

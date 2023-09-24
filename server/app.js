@@ -31,13 +31,14 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", (data) => {
     console.log(data)
-    io.to(data.room).emit("receive_message", data);
+    socket.to(data.room).emit("receive_message", data);
+    // io.to(data.room).emit("receive_message", data);
     // socket.to(data.room).emit("receive_message", data);
     // console.log(`User ${socket.id} Sent Message: ${data}`);
   });
 
   socket.on("disconnect", () => {
-    // console.log("User Disconnected ", socket.id);
+    console.log("User Disconnected ", socket.id);
   });
 
 });

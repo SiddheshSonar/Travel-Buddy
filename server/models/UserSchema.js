@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  clg_uid: {
+    type: Number,
+  }, 
   otp: {
     type: Number,
     required: false,

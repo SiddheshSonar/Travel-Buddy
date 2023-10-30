@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import authRouter from "./Router/Auth.js";
-import init from "./db/Conn.js";
-import uR from "./Router/Users.js";
+import authRouter from "../Router/Auth.js";
+import init from "../db/Conn.js";
+import uR from "../Router/Users.js";
 import { Server } from "socket.io";
 import http from "http";
 
@@ -43,14 +43,25 @@ io.on("connection", (socket) => {
 
 });
 
-
-// const baseR = express.Router();
-// app.use("/api", baseR);
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("API v0.0.1");
 });
 app.use("/auth", authRouter);
 app.use("/user", uR);
+
+// 
+// app.use("/", (req, res) => {
+//   console.log(req.body);
+  
+// });
+const routeLoggerMiddleware = (req, res, next) => {
+  console.log(`Accessed route: ${req.method} ${req.originalUrl}`);
+  next();
+};
+
+
+
+app.use(routeLoggerMiddleware);
 
 const PORT = 5000;
 app.listen(PORT, () => {

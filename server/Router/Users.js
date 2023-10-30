@@ -10,8 +10,9 @@ const uC = new UserController();
 
 uR.post("/home", auth,  uC.updateLocation);
 uR.get("/home", auth, uC.getHome);
-uR.get("/location", auth, uC.getAll);
+uR.get("/", auth, uC.getAll);
 uR.post("/friend/:id", auth, uC.sendFriendRequest);
+uR.delete("/friend/:id", auth, uC.removeFriend);
 uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
 uR.post("/chat", uC.addChatHistory);
 uR.post("/get/chat", uC.getChatHistory);

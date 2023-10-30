@@ -6,6 +6,47 @@ import User from "../models/UserSchema.js";
 class UserController {
     constructor() { }
 
+    removeFriend = async (req, res) => {
+        try {
+            const uid = new mongoose.Types.ObjectId(req.userID);
+            const fid = new mongoose.Types.ObjectId(req.params.id);
+            const user = await User.findById(uid);
+            const friendUser = await User.findById(fid);
+            if (!user) {
+                return res.status(400).json({ message: "User not found" });
+            }
+            else if (!friendUser) {
+                return res.status(400).json({ message: "Friend user not found" });
+            }
+
+
+            const friendRelationForUser = user.friends.find(friend => friend.friendId.toString() === fid.toString());
+            const friendRelationForFriendUser = friendUser.friends.find(friend => friend.friendId.toString() === uid.toString());
+
+            console.log(friendRelationForUser, friendRelationForFriendUser)
+
+            if (!friendRelationForUser) {
+                return res.status(400).json({ message: "Friend not found" });
+            }
+            else if (!friendRelationForFriendUser) {
+                return res.status(400).json({ message: "User not found" });
+            }
+
+            const index = user.friends.indexOf(friendRelationForUser);
+            user.friends.splice(index, 1);
+            await user.save();
+
+            const index2 = friendUser.friends.indexOf(friendRelationForFriendUser);
+            friendUser.friends.splice(index2, 1);
+            await friendUser.save();
+
+            return res.status(200).json({ message: "Friend removed successfully" });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Server error' });
+        }
+    }
+
     async updateLocation(req, res) {
         try {
             // console.log("updateLocation")
@@ -55,7 +96,6 @@ class UserController {
                         location: { $ne: null }
                     }
                 },
-                // Join with same collection to get friend's perspective for authenticated user
                 {
                     $lookup: {
                         from: "users",

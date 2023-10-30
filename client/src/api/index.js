@@ -44,7 +44,7 @@ class APIRequests {
     return await API.get("/user/home");
   }
   static async getAllUsers() {
-    return await API.get("/user/location");
+    return await API.get("/user/");
   }
   static async sendFriendRequest(id) {
     return await API.post(`/user/friend/${id}`);

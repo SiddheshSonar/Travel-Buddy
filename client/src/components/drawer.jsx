@@ -26,7 +26,7 @@ import Chat from "./Chat";
 const socket = io.connect("http://localhost:5001")
 
 export default function ChatDrawer() {
-  const [myInfo, setMyInfo] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [myInfo, setMyInfo] = useState();
   const selectedUser = useSelector(state => state.chat.selectedUser);
 
   const user = useSelector(state => state.chat.users[selectedUser]);
@@ -38,7 +38,9 @@ export default function ChatDrawer() {
   console.log("user", user)
   console.log("myInfo", myInfo)
 
-  // useEffect
+  useEffect(() => {
+    setMyInfo(JSON.parse(localStorage.getItem("profile")));
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -68,7 +70,8 @@ export default function ChatDrawer() {
           {user && user.name && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
               <DrawerHeader style={{ marginRight: '5px' }}>{user.name}</DrawerHeader>
-              {statusIcon(user.status, user._id, selectedUser)}
+              {/* {() => StatusIcon(user.status, user._id, selectedUser)} */}
+              <StatusIcon status={user.status} id={user._id} selectedUser={selectedUser} />
             </div>
           )}
 
@@ -100,7 +103,7 @@ export default function ChatDrawer() {
   )
 }
 
-const statusIcon = (status, id, selectedUser) => {
+const StatusIcon = (status, id, selectedUser) => {
 
   const dispatch = useDispatch();
   const toastConfig = {

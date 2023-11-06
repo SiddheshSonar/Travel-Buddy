@@ -73,6 +73,7 @@ const LocationSearchInput = ({sLL, lat, lng}) => {
                                 : { backgroundColor: '#ffffff', cursor: 'pointer' };
                             return (
                                 <div
+                                    key={suggestion.placeId}
                                     {...getSuggestionItemProps(suggestion, {
                                         className,
                                         style,

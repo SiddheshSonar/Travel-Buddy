@@ -131,7 +131,7 @@ const Login = () => {
       </motion.div>
       <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GCP_API}&libraries=places`}
-        // src={`https://maps.googleapis.com/maps/api/js?key= &libraries=places`}
+        // src={`https://maps.googleapis.com/maps/api/js?key=<ADD_YOUR_OWN_KEY>&libraries=places`}
         strategy="lazyOnload"
         onReady={
           () => {

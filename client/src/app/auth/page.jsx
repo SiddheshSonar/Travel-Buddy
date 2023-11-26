@@ -5,13 +5,10 @@ import { motion } from 'framer-motion'
 import { useState } from 'react';
 import APIRequests from '@/api';
 import VerifyEmailForm from './components/verifyPin';
-import { Button } from '@chakra-ui/react';
+// import { Button } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import RegisterModal from './components/registerModal';
 import Script from 'next/script';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const Login = () => {
   const [modal, setModal] = useState(false);
@@ -133,8 +130,8 @@ const Login = () => {
         </form>
       </motion.div>
       <Script
-        // src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GCP_API}&libraries=places`}
-        src={`https://maps.googleapis.com/maps/api/js?key= &libraries=places`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GCP_API}&libraries=places`}
+        // src={`https://maps.googleapis.com/maps/api/js?key= &libraries=places`}
         strategy="lazyOnload"
         onReady={
           () => {

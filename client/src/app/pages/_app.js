@@ -4,7 +4,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { Provider } from "react-redux";
 import io from 'socket.io-client';
 
-const socket = io.connect("http://localhost:5001")
+// const socket = io.connect("http://localhost:5001")
+const socket = io.connect("http://localhost:5000")
 
 function MyApp({ Component, pageProps }) {
   return (

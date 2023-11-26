@@ -63,15 +63,22 @@ const routeLoggerMiddleware = (req, res, next) => {
 
 app.use(routeLoggerMiddleware);
 
-const PORT = 5000;
-app.listen(PORT, () => {
+// const PORT = 5000;
+// app.listen(PORT, () => {
+//   console.clear()
+//   init()
+//   console.log(`Server @ http://localhost:${PORT}`);
+// });
+
+// server.listen(5001, () => {
+//   console.log("Socket Server @ http://localhost:5001");
+// });
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
   console.clear()
   init()
-  console.log(`Server @ http://localhost:${PORT}`);
-});
-
-server.listen(5001, () => {
-  console.log("Socket Server @ http://localhost:5001");
+  console.log(`Server is running on port ${PORT}`);
 });
 
 export default app;

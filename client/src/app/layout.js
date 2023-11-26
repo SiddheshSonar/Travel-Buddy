@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
 import io from 'socket.io-client';
 
-const socket = io.connect("http://localhost:5001")
-
+// const socket = io.connect("http://localhost:5001")
+const socket = io.connect("http://localhost:5000")
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {

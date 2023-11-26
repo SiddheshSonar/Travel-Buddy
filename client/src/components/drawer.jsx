@@ -22,7 +22,8 @@ import { LiaHourglassEndSolid, LiaTimesSolid, LiaBanSolid } from "react-icons/li
 import io from 'socket.io-client';
 import Chat from "./Chat";
 
-const socket = io.connect("http://localhost:5001")
+// const socket = io.connect("http://localhost:5001")
+const socket = io.connect("http://localhost:5000")
 
 export default function ChatDrawer() {
   const [myInfo, setMyInfo] = useState();

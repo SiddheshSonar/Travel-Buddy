@@ -36,9 +36,9 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
             };
             // console.log("send", data);
             const res = await APIRequests.verifyOTP(data);
-            console.log(res.data);
+            // console.log(res.data);
             if (res.status == 200) {
-                console.log("success");
+                // console.log("success");
                 localStorage.setItem("isIn", 'true');
                 localStorage.setItem("profile", JSON.stringify(res.data));
                 toast.success('Login Succesful!', {

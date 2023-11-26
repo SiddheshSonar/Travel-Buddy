@@ -34,7 +34,7 @@ const LocationSearchInput = ({sLL, lat, lng}) => {
                     latitude: latLng.lat,
                     longitude: latLng.lng
                 });
-                console.log('Success', latLng);
+                // console.log('Success', latLng);
             })
             .catch(error => console.error('Error', error));
     };

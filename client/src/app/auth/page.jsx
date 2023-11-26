@@ -133,14 +133,16 @@ const Login = () => {
         </form>
       </motion.div>
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GCP_API}&libraries=places`}
-        strategy="beforeInteractive"
-        // onReady={
-        //   () => {
-        //     // console.log("loaded script");
+        // src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GCP_API}&libraries=places`}
+        src={`https://maps.googleapis.com/maps/api/js?key= &libraries=places`}
+        strategy="lazyOnload"
+        onReady={
+          () => {
+            // console.log()
+            // console.log("loaded script");
             
-        //   }
-        // }
+          }
+        }
       />
 
       <RegisterModal modal={modal} setModal={setModal}/>

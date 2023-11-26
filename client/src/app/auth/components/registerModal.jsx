@@ -39,7 +39,7 @@ const RegisterModal = ({ modal, setModal }) => {
     data.location = location;
     // console.log(data);
     const response = await APIRequests.signUp(data);
-    console.log(response)
+    // console.log(response)
     if (response.status == 201) {
       toast.error(response.data.error, {
         position: "top-center",
@@ -69,7 +69,7 @@ const RegisterModal = ({ modal, setModal }) => {
 
   const onSubmit = (data) => {
     // Handle form submission here
-    console.log(data);
+    // console.log(data);
     registerUser(data);
     // You can send the data to your server or perform other actions
     // toggle(); // Close the modal after submission
@@ -79,9 +79,9 @@ const RegisterModal = ({ modal, setModal }) => {
 
   
 
-  useEffect(() => {
-    console.log("set loc as:", location)
-  }, [location]);
+  // useEffect(() => {
+  //   // console.log("set loc as:", location)
+  // }, [location]);
 
 
 
@@ -137,10 +137,10 @@ const RegisterModal = ({ modal, setModal }) => {
               </div>
             </div>
             <ModalFooter>
-              <Button color="primary" type="submit">
+              <Button outline  color="primary" type="submit">
                 Register
               </Button>{' '}
-              <Button color="secondary" onClick={toggle}>
+              <Button filled color="danger" onClick={toggle}>
                 Cancel
               </Button>
             </ModalFooter>

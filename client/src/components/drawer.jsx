@@ -1,11 +1,10 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
-import { Button, CircularProgress, useDisclosure } from "@chakra-ui/react";
+import { Button, useDisclosure } from "@chakra-ui/react";
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -35,8 +34,6 @@ export default function ChatDrawer() {
   const { onOpen, onClose } = useDisclosure()
 
   const isOpen = useSelector(state => state.chat.isOpen);
-  console.log("user", user)
-  console.log("myInfo", myInfo)
 
   useEffect(() => {
     setMyInfo(JSON.parse(localStorage.getItem("profile")));
@@ -103,7 +100,7 @@ export default function ChatDrawer() {
   )
 }
 
-const StatusIcon = (status, id, selectedUser) => {
+const StatusIcon = ({status, id, selectedUser}) => {
 
   const dispatch = useDispatch();
   const toastConfig = {

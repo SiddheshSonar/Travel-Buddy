@@ -9,8 +9,8 @@ const Chat = ({ socket, receiver, sender, room }) => {
     const [messageList, setMessageList] = useState([])
     const [loading, setLoading] = useState(true)
 
-    console.log(receiver)
-    console.log(sender)
+    // console.log(receiver)
+    // console.log(sender)
     // console.log(room)
     // console.log(socket)
 
@@ -39,7 +39,7 @@ const Chat = ({ socket, receiver, sender, room }) => {
     useEffect(() => {
         socket.on('receive_message', (data) => {
             setMessageList((list) => [...list, data])
-            console.log(data)
+            // console.log(data)
         })
     }, [socket])
 
@@ -49,7 +49,7 @@ const Chat = ({ socket, receiver, sender, room }) => {
                 sendId: sender.uid,
                 recId: receiver._id
             })
-            console.log(messages)
+            // console.log(messages)
             setMessageList(messages.data.chatHistory)
             setLoading(false)
         }
@@ -59,7 +59,7 @@ const Chat = ({ socket, receiver, sender, room }) => {
 
 
     useEffect(() => {
-        console.log(messageList)
+        // console.log(messageList)
         // scroll to bottom of chat box when new msg is added
         const chatBox = document.getElementById('chatBox')
         if (chatBox) {

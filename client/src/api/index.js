@@ -2,7 +2,8 @@ import axios from "axios";
 
 const API = axios.create({
   // baseURL: "https://kvh.serveo.net",
-  baseURL: "https://tb-server.onrender.com",
+  // baseURL: "https://tb-server.onrender.com",
+  baseURL: process.env.NEXT_PUBLIC_API ?? "http://localhost:5000",
   // baseURL: "https://travel-buddy-server-two.vercel.app",
 });
 

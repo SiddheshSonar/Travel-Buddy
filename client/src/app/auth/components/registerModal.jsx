@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller, set } from 'react-hook-form';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+import React, {
+  useState
+} from 'react';
+import {
+  useForm
+} from 'react-hook-form';
+import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter
+} from 'reactstrap';
 import { toast } from 'react-toastify';
 import APIRequests from '@/api';
 import "./modal.css"
@@ -16,24 +22,24 @@ dotenv.config();
 
 const RegisterModal = ({ modal, setModal }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  
+
 
   const toastConfig = {
     position: "top-center",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
   };
 
   const [location, setLocation] = useState({});
   const registerUser = async (data) => {
-    
-    if(!location.latitude || !location.longitude){
-      toast.error("Please select a location",toastConfig)
+
+    if (!location.latitude || !location.longitude) {
+      toast.error("Please select a location", toastConfig)
       return;
     }
     data.location = location;
@@ -68,22 +74,10 @@ const RegisterModal = ({ modal, setModal }) => {
   }
 
   const onSubmit = (data) => {
-    // Handle form submission here
-    // console.log(data);
     registerUser(data);
-    // You can send the data to your server or perform other actions
-    // toggle(); // Close the modal after submission
   };
 
   const toggle = () => setModal(!modal);
-
-  
-
-  // useEffect(() => {
-  //   // console.log("set loc as:", location)
-  // }, [location]);
-
-
 
   return (
     <>
@@ -106,7 +100,7 @@ const RegisterModal = ({ modal, setModal }) => {
           <form onSubmit={handleSubmit(onSubmit)} >
             <div className='flex flex-col items-center justify-evenly gap-4 mb-2 w-full'>
               <div className='w-full' >
-                <input className='w-full' type="text" placeholder="Name " {...register("name", { required: true, maxLength: 80 })}  />
+                <input className='w-full' type="text" placeholder="Name " {...register("name", { required: true, maxLength: 80 })} />
               </div>
               <div className='w-full' >
                 <input className='w-full' type="email" placeholder="Email" {...register("email", { required: true, maxLength: 80 })} />
@@ -132,15 +126,15 @@ const RegisterModal = ({ modal, setModal }) => {
               <div className='w-full' >
                 <LocationSearchInput sLL={setLocation} />
                 <Provider store={store}>
-                <MyMap lat={location.latitude} long={location.longitude} forReg={true} sLL={setLocation}/>
+                  <MyMap lat={location.latitude} long={location.longitude} forReg={true} sLL={setLocation} />
                 </Provider>
               </div>
             </div>
             <ModalFooter>
-              <Button outline  color="primary" type="submit">
+              <Button outline color="primary" type="submit">
                 Register
               </Button>{' '}
-              <Button filled color="danger" onClick={toggle}>
+              <Button outline color='danger' onClick={toggle}>
                 Cancel
               </Button>
             </ModalFooter>

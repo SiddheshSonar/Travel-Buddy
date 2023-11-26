@@ -12,12 +12,12 @@ import APIRequests from '@/api';
 import "./modal.css"
 import LocationSearchInput from './location';
 import Script from 'next/script';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import MyMap from '@/components/map';
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
 
-dotenv.config();
+// dotenv.config();
 
 
 const RegisterModal = ({ modal, setModal }) => {
@@ -83,7 +83,7 @@ const RegisterModal = ({ modal, setModal }) => {
     <>
       {modal && (
         <Script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GCP_API}&libraries=places`}
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GCP_API}&libraries=places`}
           strategy="beforeInteractive"
         />
       )}

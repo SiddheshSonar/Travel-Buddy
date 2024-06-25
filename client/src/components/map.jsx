@@ -129,7 +129,7 @@ const MyMap = ({ lat, long, forReg, sLL }) => {
         interactive={true}
         mapStyle="mapbox://styles/gnsmtest/cllxwulk000kv01peb9yk15a9"
         onMove={evt => setViewport(evt.viewState)}
-        mapboxAccessToken={"pk.eyJ1IjoiZ25zbXRlc3QiLCJhIjoiY2xseHc5d3plMmt0eDNlcGU4NmN2eXk4aCJ9.qjuYscqJ5dSJMS3XJYmmxQ"}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAP}
       >
         <div style={{ position: 'absolute', left: 10, top: 10 }} className='flex flex-col'>
           <div
